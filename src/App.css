@@ -191,6 +191,25 @@ a {
   color: red;
 }
 
+.song-button, .song-button-disabled {
+  font-size:25pt;
+  border-width: 1px;
+  border-radius: 5px;
+  margin-left: auto;
+  color: black;
+  cursor: pointer;
+}
+
+.song-button:hover {
+  cursor: pointer;
+  color:black;
+}
+
+.song-button-disabled {
+  opacity: 0.25; 
+  cursor: not-allowed;
+}
+
 input {
   font-size:20pt;
 }
