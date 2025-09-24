@@ -87,7 +87,7 @@ export default class PlaylistCard extends React.Component {
                         id={"delete-list-" + keyNamePair.key}
                         className="card-button"
                         onClick={this.handleDeleteList}
-                        value={"\u2715"} />
+                        value={"🗑"} />
                 </div>
             );
         }
