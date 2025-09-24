@@ -10,6 +10,7 @@ import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
 
 // THESE REACT COMPONENTS ARE MODALS
 import DeleteListModal from './components/DeleteListModal.jsx';
+import EditSongModal from './components/EditSongModal.jsx';
 
 // THESE REACT COMPONENTS ARE IN OUR UI
 import Banner from './components/Banner.jsx';
@@ -36,7 +37,9 @@ class App extends React.Component {
         this.state = {
             listKeyPairMarkedForDeletion : null,
             currentList : null,
-            sessionData : loadedSessionData
+            sessionData : loadedSessionData,
+            currentSongIndex: null,      
+            currentSong: null 
         }
     }
     sortKeyNamePairsByName = (keyNamePairs) => {
@@ -269,11 +272,52 @@ class App extends React.Component {
         let modal = document.getElementById("delete-list-modal");
         modal.classList.add("is-visible");
     }
+    showEditSongModal() {
+        console.log("hi");
+        let modal = document.getElementById("edit-song-modal");
+        modal.classList.add("is-visible");
+    }
+
     // THIS FUNCTION IS FOR HIDING THE MODAL
     hideDeleteListModal() {
         let modal = document.getElementById("delete-list-modal");
         modal.classList.remove("is-visible");
     }
+    hideEditSongModal() {
+        let modal = document.getElementById("edit-song-modal");
+        modal.classList.remove("is-visible");
+    }
+
+    handleEditSong = (songIndex, updatedSong) => {
+        if (!this.state.currentList) return;
+        
+        // Update the song in the current list
+        const updatedSongs = [...this.state.currentList.songs];
+        updatedSongs[songIndex] = updatedSong;
+        
+        const updatedList = {
+            ...this.state.currentList,
+            songs: updatedSongs
+        };
+        
+        this.setStateWithUpdatedList(updatedList);
+        this.hideEditSongModal(); // Close the modal after saving
+    }
+    handleEditSongClick = (songIndex) => {
+        console.log("editing mdoal");
+        if (!this.state.currentList || !this.state.currentList.songs[songIndex]) return;
+        
+        // Set the song we're editing and show the modal
+        this.setState({
+            currentSongIndex: songIndex,
+            currentSong: this.state.currentList.songs[songIndex]
+        }, () => {
+            // Show the modal after state is updated
+            console.log("show mdoal");
+            this.showEditSongModal();
+        });
+    }
+
     render() {
         let canAddSong = this.state.currentList !== null;
         let canUndo = this.tps.hasTransactionToUndo();
@@ -303,13 +347,22 @@ class App extends React.Component {
                 />
                 <SongCards
                     currentList={this.state.currentList}
-                    moveSongCallback={this.addMoveSongTransaction} />
+                    moveSongCallback={this.addMoveSongTransaction}
+                    hideEditSongModalCallback={this.hideEditSongModal}
+                    onEditSong={this.handleEditSongClick}/>
                 <Statusbar 
                     currentList={this.state.currentList} />
                 <DeleteListModal
                     listKeyPair={this.state.listKeyPairMarkedForDeletion}
                     hideDeleteListModalCallback={this.hideDeleteListModal}
                     deleteListCallback={this.deleteMarkedList}
+                />
+                <EditSongModal
+                    song={this.state.currentSong}
+                    confirmEditSong={(updatedSong) => 
+                        this.handleEditSong(this.state.currentSongIndex, updatedSong)
+                    }
+                    hideEditSongModal={this.hideEditSongModal}
                 />
             </>
         );

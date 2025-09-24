@@ -58,10 +58,16 @@ export default class SongCard extends React.Component {
         return this.props.id.substring("song-card-".length);
     }
 
+    handleDoubleClick = (event) => {
+        console.log("dbl click");
+        const index = parseInt(this.getItemNum())-1;
+        this.props.onEditSong(index);
+    }
+
     render() {
         const { song } = this.props;
         let num = this.getItemNum();
-        console.log("num: " + num);
+        //console.log("num: " + num);
         let itemClass = "song-card";
         if (this.state.draggedTo) {
             itemClass = "song-card-dragged-to";
@@ -75,13 +81,14 @@ export default class SongCard extends React.Component {
                 onDragEnter={this.handleDragEnter}
                 onDragLeave={this.handleDragLeave}
                 onDrop={this.handleDrop}
+                onDoubleClick={this.handleDoubleClick}
                 draggable="true"
             >
                 {num + "."}&nbsp;
-                <a class="song-card-title" target="_1" href={"https://www.youtube.com/watch?v=" + song.youTubeId }>{song.title}&nbsp;</a>
-                <span class="song-card-year">{"(" + song.year + ")"}&nbsp;</span>
+                <a className="song-card-title" target="_1" href={"https://www.youtube.com/watch?v=" + song.youTubeId }>{song.title}&nbsp;</a>
+                <span className="song-card-year">{"(" + song.year + ")"}&nbsp;</span>
                 by&nbsp;
-                <span class="song-card-artist">{song.artist}</span>
+                <span className="song-card-artist">{song.artist}</span>
                 <input
                     type="button"
                     id={"delete-song-" + num}

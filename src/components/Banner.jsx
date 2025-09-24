@@ -4,7 +4,7 @@ export default class Banner extends React.Component {
     render() {
         return (
             <div id="banner">
-                Playlist
+                Playlist-Hw2
             </div>
         );
     }

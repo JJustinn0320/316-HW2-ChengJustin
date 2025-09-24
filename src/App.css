@@ -278,7 +278,7 @@ input {
 .modal-center {
   display: grid;
   grid-template-columns: 30% 65%;
-  grid-template-rows: 33% 33% 33%;
+  grid-template-rows: 20% 20% 20% 20%;
   gap: 10px 20px;
   font-size: 48pt;
 }
@@ -317,6 +317,41 @@ span {
 #title-prompt {
   grid-column: 1 / 2;
   grid-row: 1 / 2;
+}
+
+#edit-song-modal-title-textfield {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+#artist-prompt {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+#edit-song-modal-artist-textfield {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+
+#year-prompt {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+
+#edit-song-modal-year-textfield {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+}
+
+#you-tube-id-prompt {
+  grid-column: 1 / 2;
+  grid-row: 4 / 5;
+}
+
+#edit-song-modal-youTubeId-textfield {
+  grid-column: 2 / 3;
+  grid-row: 4 / 5;
 }
 
 .modal-button {
