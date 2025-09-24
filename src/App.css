@@ -249,7 +249,7 @@ input {
 
 .modal-root {
   position: relative;
-  max-width: 1200vw;
+  max-width: 50%;
   max-height: 600vh;
   overflow: visible;
   display: flex;
