@@ -165,6 +165,32 @@ body {
   background-color: var(--swatch-complement);
 }
 
+.song-card-title {
+  color: var(--swatch-link-emphasis);
+}
+
+.song-card:hover {
+  cursor: pointer;
+  background-color: var(--swatch-contrast);
+  color: white;
+}
+
+.song-card:hover .song-card-title {
+  color: var(--swatch-link-contrast);
+}
+
+.song-card .song-card-title:hover {
+  color: var(--swatch-link-hover);
+}
+
+a {
+  text-decoration: none;
+}
+
+.song-card-artist{
+  color: red;
+}
+
 input {
   font-size:20pt;
 }
