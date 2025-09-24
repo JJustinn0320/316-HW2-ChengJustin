@@ -280,7 +280,7 @@ class App extends React.Component {
         let canRedo = this.tps.hasTransactionToDo();
         let canClose = this.state.currentList !== null;
         return (
-            <div id="root">
+            <>
                 <Banner />
                 <SidebarHeading
                     createNewListCallback={this.createNewList}
@@ -311,7 +311,7 @@ class App extends React.Component {
                     hideDeleteListModalCallback={this.hideDeleteListModal}
                     deleteListCallback={this.deleteMarkedList}
                 />
-            </div>
+            </>
         );
     }
 }

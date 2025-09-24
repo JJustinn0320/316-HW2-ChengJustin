@@ -10,6 +10,10 @@
   --swatch-contrast: #111111; 
   --swatch-accent: #669966; 
   --swatch-status: #123456;
+  --swatch-link-emphasis: #b88320;
+  --swatch-link-contrast:lightgreen;
+  --swatch-link-hover:pink;
+  --switch-link-active: magenta;
   --bounceEasing: cubic-bezier(0.51, 0.92, 0.24, 1.15);
 }
 
@@ -109,21 +113,21 @@ body {
 }
 
 .playlist-card, .selected-playlist-card, .unselected-playlist-card {
-  font-size: 18pt;
+  height: 6.1%;
+  font-size: 24pt;
   margin: 10px;
-  padding: 20px;
-  border-radius: 25px;
+  padding: 10px;
+  border-radius: 125px;
 }
 
-.unselected-playlist-card:hover {
+.unselected-playlist-card:hover, .selected-playlist-card:hover {
   cursor: pointer;
   background-color: var(--swatch-contrast);
-  color:white;
+  color: var(--swatch-link-contrast);
 }
 
 .selected-playlist-card {
   background-color: var(--swatch-accent);
-  color: white;
 }
 
 .unselected-playlist-card {
@@ -131,8 +135,9 @@ body {
 }
 
 .card-button, .card-button-disabled {
-  font-size:18pt;
-  border-width: 0px;
+  font-size:24pt;
+  border-width: 1px;
+  border-radius: 5px;
   float:right;
   color: black;
   cursor: pointer;
@@ -152,13 +157,26 @@ body {
   display:flex;
   align-items: center;
   font-size: 24pt;
-  height:20%;
+  height:6.1%;
+  flex-shrink: 0;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 125px;
+  background-color: var(--swatch-complement);
 }
 
 input {
   font-size:20pt;
 }
 
+.toolbar-button {
+  font-size:36pt;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  box-shadow: 2px 4px #888888;
+  border-radius: 5px;
+}
 
 /* THIS STYLE SHEET MANAGES STYLE FOR OUR MODAL, i.e. DIALOG BOX */
 
