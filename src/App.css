@@ -151,7 +151,7 @@ body {
 }
 
 .card-button-disabled {
-  opacity: 0.25; 
+  opacity: 0.25;
   cursor: not-allowed;
 }
 
@@ -226,6 +226,17 @@ input {
   border-style: solid;
   box-shadow: 2px 4px #888888;
   border-radius: 5px;
+}
+
+.toolbar-button-disabled {
+  opacity: 0.25; 
+  font-size:36pt;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  box-shadow: 2px 4px #888888;
+  border-radius: 5px;
+  cursor: not-allowed;
 }
 
 /* THIS STYLE SHEET MANAGES STYLE FOR OUR MODAL, i.e. DIALOG BOX */
