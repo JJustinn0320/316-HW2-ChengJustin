@@ -6,6 +6,10 @@ import DBManager from './db/DBManager';
 import { jsTPS } from 'jstps';
 
 // OUR TRANSACTIONS
+import AddSong_Transaction from './transactions/AddSong_Transaction.js';
+import DeleteSong_Transaction from './transactions/DeleteSong_Transaction.js';
+import DuplicateSong_Transaction from './transactions/DuplicateSong_Transaction.js';
+import EditSong_Transaction from './transactions/EditSong_Transaction.js';
 import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
 
 // THESE REACT COMPONENTS ARE MODALS
@@ -238,8 +242,36 @@ class App extends React.Component {
         let transaction = new MoveSong_Transaction(this, start, end);
         this.tps.processTransaction(transaction);
     }
+    addAddSongTransaction = () => {
+        let index = this.state.currentList.songs.length;
+        let transaction = new AddSong_Transaction(this, index, null);
+        this.tps.processTransaction(transaction);
+    }
+    addDeleteSongTransaction = (songIndex) => {
+        const songToDuplicate = this.state.currentList.songs[songIndex];
+        const duplicatedSong = JSON.parse(JSON.stringify(songToDuplicate));
+
+        let transaction = new DeleteSong_Transaction(this, songIndex, duplicatedSong);
+        this.tps.processTransaction(transaction);
+    }
+    addDuplicateSongTransaction = (songIndex) => {
+        const songToDuplicate = this.state.currentList.songs[songIndex];
+        const duplicatedSong = JSON.parse(JSON.stringify(songToDuplicate));
+        duplicatedSong.title = duplicatedSong.title + "(Copy)";
+
+        let transaction = new DuplicateSong_Transaction(this, songIndex, duplicatedSong);
+        this.tps.processTransaction(transaction);
+    }
+    addEditSongTransaction = (songIndex, newSong) => {
+        const songToDuplicate = this.state.currentList.songs[songIndex];
+        const oldSong = JSON.parse(JSON.stringify(songToDuplicate));
+
+        let transaction = new EditSong_Transaction(this, songIndex, oldSong, newSong);
+        this.tps.processTransaction(transaction);
+    }
     // THIS FUNCTION BEGINS THE PROCESS OF PERFORMING AN UNDO
     undo = () => {
+        console.log("undoo");
         if (this.tps.hasTransactionToUndo()) {
             this.tps.undoTransaction();
 
@@ -249,6 +281,7 @@ class App extends React.Component {
     }
     // THIS FUNCTION BEGINS THE PROCESS OF PERFORMING A REDO
     redo = () => {
+        console.log("redoo");
         if (this.tps.hasTransactionToDo()) {
             this.tps.doTransaction();
 
@@ -389,22 +422,23 @@ class App extends React.Component {
             this.db.mutationUpdateSessionData(this.state.sessionData);
         });
     }
-    handleAddSong = () =>{
+    handleAddSong = (songIndex, song) =>{
         const newSong = {
-            title: "Untitled",
-            artist: "???",
-            year: "2000",
-            youTubeId: "dQw4w9WgXcQ"
+            title: song ? song.title : "Untitled",
+            artist: song ? song.artist : "???",
+            year: song ? song.year : "2000",
+            youTubeId: song ? song.youTubeId : "dQw4w9WgXcQ"
         }
 
-        const updatedSongs = [...this.state.currentList.songs, newSong];
+        const updatedSongs = [...this.state.currentList.songs];
+        updatedSongs.splice(songIndex, 0, newSong);
 
         const updatedList = {
             ...this.state.currentList,
             songs: updatedSongs
         };
     
-    this.setStateWithUpdatedList(updatedList);
+        this.setStateWithUpdatedList(updatedList);
     }
 
     render() {
@@ -434,15 +468,15 @@ class App extends React.Component {
                     undoCallback={this.undo}
                     redoCallback={this.redo}
                     closeCallback={this.closeCurrentList}
-                    addSongCallback={this.handleAddSong}
+                    addSongCallback={this.addAddSongTransaction}
                 />
                 <SongCards
                     currentList={this.state.currentList}
                     moveSongCallback={this.addMoveSongTransaction}
                     hideEditSongModalCallback={this.hideEditSongModal}
                     onEditSong={this.handleEditSongClick}
-                    onDeleteSong={this.handleDeleteSong}
-                    onDuplicateSong={this.handleDuplicateSong}/>
+                    onDeleteSong={this.addDeleteSongTransaction}
+                    onDuplicateSong={this.addDuplicateSongTransaction}/>
                 <Statusbar 
                     currentList={this.state.currentList} />
                 <DeleteListModal
@@ -453,7 +487,7 @@ class App extends React.Component {
                 <EditSongModal
                     song={this.state.currentSong}
                     confirmEditSong={(updatedSong) => 
-                        this.handleEditSong(this.state.currentSongIndex, updatedSong)
+                        this.addEditSongTransaction(this.state.currentSongIndex, updatedSong)
                     }
                     hideEditSongModal={this.hideEditSongModal}
                 />
