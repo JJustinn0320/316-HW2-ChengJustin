@@ -15,6 +15,7 @@ export default class PlaylistCard extends React.Component {
         }
         else if (event.detail === 2) {
             this.handleToggleEdit(event);
+            this.props.changeEditState();
         }
     }
     handleLoadList = (event) => {

@@ -42,8 +42,9 @@ class App extends React.Component {
             listKeyPairMarkedForDeletion : null,
             currentList : null,
             sessionData : loadedSessionData,
-            currentSongIndex: null,      
-            currentSong: null 
+            currentSongIndex : null,      
+            currentSong : null ,
+            editingPlaylist : false
         }
     }
     sortKeyNamePairsByName = (keyNamePairs) => {
@@ -142,6 +143,7 @@ class App extends React.Component {
         }
     }
     renameList = (key, newName) => {
+        console.log("renaming list");
         let newKeyNamePairs = [...this.state.sessionData.keyNamePairs];
         // NOW GO THROUGH THE ARRAY AND FIND THE ONE TO RENAME
         for (let i = 0; i < newKeyNamePairs.length; i++) {
@@ -173,6 +175,7 @@ class App extends React.Component {
             this.db.mutationUpdateList(list);
             this.db.mutationUpdateSessionData(this.state.sessionData);
         });
+        this.setState({editingPlaylist: false});
     }
     // THIS FUNCTION BEGINS THE PROCESS OF LOADING A LIST FOR EDITING
     loadList = (key) => {
@@ -475,16 +478,22 @@ class App extends React.Component {
     
         this.setStateWithUpdatedList(updatedList);
     }
-
+    changeEditState = (playlistkey) => {
+        this.setState({editingPlaylist: true})
+    }
     render() {
         let canAddSong = this.state.currentList !== null;
         let canUndo = this.tps.hasTransactionToUndo();
         let canRedo = this.tps.hasTransactionToDo();
         let canClose = this.state.currentList !== null;
+
+        let canAddPlaylist = !this.state.editingPlaylist;
+        console.log("canAddPlaylist:", canAddPlaylist);
         return (
             <>
                 <Banner />
                 <SidebarHeading
+                    canAddPlaylist={canAddPlaylist}
                     createNewListCallback={this.createNewList}
                 />
                 <SidebarList
@@ -494,6 +503,7 @@ class App extends React.Component {
                     loadListCallback={this.loadList}
                     renameListCallback={this.renameList}
                     duplicateListCallback={this.handleDuplicatePlayList}
+                    changeEditState={this.changeEditState}
                 />
                 <EditToolbar
                     canAddSong={canAddSong}
