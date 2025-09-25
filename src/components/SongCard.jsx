@@ -39,9 +39,12 @@ export default class SongCard extends React.Component {
     }
     handleDrop = (event) => {
         event.preventDefault();
-        let target = event.target;
-        let targetId = target.id;
-        targetId = targetId.substring(target.id.indexOf("-") + 1);
+        
+        let targetElement = event.currentTarget;
+        console.log(targetElement);
+        let targetId = targetElement.id;
+        targetId = targetId.substring(targetId.indexOf("-") + 1);
+        
         let sourceId = event.dataTransfer.getData("song");
         sourceId = sourceId.substring(sourceId.indexOf("-") + 1);
         
