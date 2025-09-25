@@ -193,11 +193,14 @@ a {
   color: red;
 }
 
+.song-buttons {
+  margin-left: auto;
+}
+
 .song-button, .song-button-disabled {
-  font-size:25pt;
+  font-size: 25pt;
   border-width: 1px;
   border-radius: 5px;
-  margin-left: auto;
   color: black;
   cursor: pointer;
 }

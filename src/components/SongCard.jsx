@@ -63,6 +63,12 @@ export default class SongCard extends React.Component {
         const index = parseInt(this.getItemNum())-1;
         this.props.onEditSong(index);
     }
+    handleDeleteSong = (event) => {
+        console.log("delete song pls")
+        event.stopPropagation(); // Preven double-click
+        const index = parseInt(this.getItemNum()) - 1;
+        this.props.onDeleteSong(index);
+    }
 
     render() {
         const { song } = this.props;
@@ -89,12 +95,23 @@ export default class SongCard extends React.Component {
                 <span className="song-card-year">{"(" + song.year + ")"}&nbsp;</span>
                 by&nbsp;
                 <span className="song-card-artist">{song.artist}</span>
-                <input
-                    type="button"
-                    id={"delete-song-" + num}
-                    className="song-button"
-                    onClick={this.handleDeleteSong}
-                    value={"🗑"} />
+                
+                <div
+                    className="song-buttons">
+                        <input
+                        type="button"
+                        id={"delete-song-" + num}
+                        className="song-button"
+                        onClick={this.handleDeleteSong}
+                        value={"🗑"} />
+                        <input
+                        type="button"
+                        id={"duplicate-song-" + num}
+                        className="song-button"
+                        onClick={this.handleDuplicateSong}
+                        value={"⎘"} />
+                        
+                </div>
             </div>
         )
     }

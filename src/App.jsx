@@ -305,7 +305,8 @@ class App extends React.Component {
     }
     handleEditSongClick = (songIndex) => {
         console.log("editing mdoal");
-        if (!this.state.currentList || !this.state.currentList.songs[songIndex]) return;
+        if (!this.state.currentList || !this.state.currentList.songs[songIndex]) 
+            return;
         
         // Set the song we're editing and show the modal
         this.setState({
@@ -316,6 +317,21 @@ class App extends React.Component {
             console.log("show mdoal");
             this.showEditSongModal();
         });
+    }
+    handleDeleteSong = (songIndex) => {
+        if (!this.state.currentList) 
+            return;
+        
+        // Remove the song from the current list
+        const updatedSongs = [...this.state.currentList.songs];
+        updatedSongs.splice(songIndex, 1); // Remove 1 item at songIndex
+        
+        const updatedList = {
+            ...this.state.currentList,
+            songs: updatedSongs
+        };
+        
+        this.setStateWithUpdatedList(updatedList);
     }
 
     render() {
@@ -349,7 +365,8 @@ class App extends React.Component {
                     currentList={this.state.currentList}
                     moveSongCallback={this.addMoveSongTransaction}
                     hideEditSongModalCallback={this.hideEditSongModal}
-                    onEditSong={this.handleEditSongClick}/>
+                    onEditSong={this.handleEditSongClick}
+                    onDeleteSong={this.handleDeleteSong}/>
                 <Statusbar 
                     currentList={this.state.currentList} />
                 <DeleteListModal
