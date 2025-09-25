@@ -333,6 +333,63 @@ class App extends React.Component {
         
         this.setStateWithUpdatedList(updatedList);
     }
+    handleDuplicateSong = (songIndex) => {
+        if (!this.state.currentList) 
+            return;
+        
+        // Create a deep copy of the song
+        const songToDuplicate = this.state.currentList.songs[songIndex];
+        const duplicatedSong = JSON.parse(JSON.stringify(songToDuplicate));
+        
+        // Optionally modify the title to indicate it's a duplicate
+        duplicatedSong.title = duplicatedSong.title + " (Copy)";
+        
+        // Insert the duplicate right after the original song
+        const updatedSongs = [...this.state.currentList.songs];
+        updatedSongs.splice(songIndex + 1, 0, duplicatedSong);
+        
+        const updatedList = {
+            ...this.state.currentList,
+            songs: updatedSongs
+        };
+        
+        this.setStateWithUpdatedList(updatedList);
+    }
+    handleDuplicatePlayList = (key) => {
+        const listToDuplicate = this.db.queryGetList(key);
+        if (!listToDuplicate) return;
+        
+        //deep copy of the playlist
+        const duplicatedList = JSON.parse(JSON.stringify(listToDuplicate));
+        
+        // new key and name 
+        const newKey = this.state.sessionData.nextKey;
+        const newName = duplicatedList.name + " (Copy)";
+        
+        // update the duplicate's 
+        duplicatedList.key = newKey;
+        duplicatedList.name = newName;
+        
+        // Create keyNamePair 
+        const newKeyNamePair = { "key": newKey, "name": newName };
+        const updatedPairs = [...this.state.sessionData.keyNamePairs, newKeyNamePair];
+        this.sortKeyNamePairsByName(updatedPairs);
+        
+        this.setState(prevState => ({
+            listKeyPairMarkedForDeletion: prevState.listKeyPairMarkedForDeletion,
+            currentList: duplicatedList, 
+            sessionData: {
+                nextKey: prevState.sessionData.nextKey + 1,
+                counter: prevState.sessionData.counter + 1,
+                keyNamePairs: updatedPairs
+            }
+        }), () => {
+            // Save to storage
+            this.db.mutationCreateList(duplicatedList);
+            this.db.mutationUpdateSessionData(this.state.sessionData);
+        });
+    }
+
 
     render() {
         let canAddSong = this.state.currentList !== null;
@@ -351,6 +408,7 @@ class App extends React.Component {
                     deleteListCallback={this.markListForDeletion}
                     loadListCallback={this.loadList}
                     renameListCallback={this.renameList}
+                    duplicateListCallback={this.handleDuplicatePlayList}
                 />
                 <EditToolbar
                     canAddSong={canAddSong}
@@ -366,7 +424,8 @@ class App extends React.Component {
                     moveSongCallback={this.addMoveSongTransaction}
                     hideEditSongModalCallback={this.hideEditSongModal}
                     onEditSong={this.handleEditSongClick}
-                    onDeleteSong={this.handleDeleteSong}/>
+                    onDeleteSong={this.handleDeleteSong}
+                    onDuplicateSong={this.handleDuplicateSong}/>
                 <Statusbar 
                     currentList={this.state.currentList} />
                 <DeleteListModal

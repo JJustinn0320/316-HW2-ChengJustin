@@ -48,6 +48,10 @@ export default class PlaylistCard extends React.Component {
         this.props.renameListCallback(key, textValue);
         this.handleToggleEdit();
     }
+    handleDuplicateList = (event) => {
+        event.stopPropagation();
+        this.props.duplicateListCallback(this.props.keyNamePair.key);
+    }
 
     render() {
         const { keyNamePair, selected } = this.props;

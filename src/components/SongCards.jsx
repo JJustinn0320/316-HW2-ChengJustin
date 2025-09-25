@@ -6,7 +6,8 @@ export default class SongCards extends React.Component {
         const { currentList, 
                 moveSongCallback, 
                 onEditSong,
-                onDeleteSong} = this.props;
+                onDeleteSong,
+                onDuplicateSong} = this.props;
         if (currentList === null) {
             return (
                 <div id="song-cards"></div>
@@ -25,6 +26,7 @@ export default class SongCards extends React.Component {
                                 onEditSong={onEditSong}
                                 index={index}
                                 onDeleteSong={onDeleteSong}
+                                onDuplicateSong={onDuplicateSong}
                             />
                         ))
                     }

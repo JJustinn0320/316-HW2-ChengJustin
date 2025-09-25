@@ -64,10 +64,16 @@ export default class SongCard extends React.Component {
         this.props.onEditSong(index);
     }
     handleDeleteSong = (event) => {
-        console.log("delete song pls")
+        console.log("delete song pls");
         event.stopPropagation(); // Preven double-click
         const index = parseInt(this.getItemNum()) - 1;
         this.props.onDeleteSong(index);
+    }
+    handleDuplicateSong = (event) => {
+        console.log("dup song");
+        event.stopPropagation();
+        const index = parseInt(this.getItemNum()) - 1;
+        this.props.onDuplicateSong(index);
     }
 
     render() {
