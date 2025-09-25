@@ -269,6 +269,43 @@ class App extends React.Component {
         let transaction = new EditSong_Transaction(this, songIndex, oldSong, newSong);
         this.tps.processTransaction(transaction);
     }
+    // event listeners
+    componentDidMount() {
+        // Add keyboard event listener when component mounts
+        document.addEventListener('keydown', this.handleKeyDown);
+    }
+    componentWillUnmount() {
+        // Remove keyboard event listener when component unmounts
+        document.removeEventListener('keydown', this.handleKeyDown);
+    }
+
+    handleKeyDown = (event) => {
+        // Check if Ctrl key is pressed
+        if (event.ctrlKey || event.metaKey) { // metaKey for Mac Command key
+            switch (event.key) {
+                case 'z':
+                    // Ctrl+Z - Undo
+                    if (!event.shiftKey) { // not Ctrl+Shift+Z
+                        event.preventDefault();
+                        this.undo();
+                    }
+                    break;
+                case 'y':
+                    // Ctrl+Y - Redo
+                    event.preventDefault();
+                    this.redo();
+                    break;
+                case 'Z':
+                    // Ctrl+Shift+Z - Redo (alternative)
+                    if (event.shiftKey) {
+                        event.preventDefault();
+                        this.redo();
+                    }
+                    break;
+            }
+        }
+    }
+
     // THIS FUNCTION BEGINS THE PROCESS OF PERFORMING AN UNDO
     undo = () => {
         console.log("undoo");
