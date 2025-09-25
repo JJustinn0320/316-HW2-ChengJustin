@@ -389,7 +389,23 @@ class App extends React.Component {
             this.db.mutationUpdateSessionData(this.state.sessionData);
         });
     }
+    handleAddSong = () =>{
+        const newSong = {
+            title: "Untitled",
+            artist: "???",
+            year: "2000",
+            youTubeId: "dQw4w9WgXcQ"
+        }
 
+        const updatedSongs = [...this.state.currentList.songs, newSong];
+
+        const updatedList = {
+            ...this.state.currentList,
+            songs: updatedSongs
+        };
+    
+    this.setStateWithUpdatedList(updatedList);
+    }
 
     render() {
         let canAddSong = this.state.currentList !== null;
@@ -418,6 +434,7 @@ class App extends React.Component {
                     undoCallback={this.undo}
                     redoCallback={this.redo}
                     closeCallback={this.closeCurrentList}
+                    addSongCallback={this.handleAddSong}
                 />
                 <SongCards
                     currentList={this.state.currentList}
